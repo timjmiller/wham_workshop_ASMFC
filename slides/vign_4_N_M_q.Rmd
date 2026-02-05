@@ -85,8 +85,8 @@ The `NAA_re` argument to `prepare_wham_input` or `set_NAA` has these elements to
 
 # Abundance at age options
 * `sigma`: whether to estimate random effects on recruitment only or recruitment and survival from one time step to the next.
- * `rec`: random effects for recruitment only, survival/transitions for older ages are deterministic.
- * `rec+1`: random effects for recruitment and survival/transitions for older ages
+ * `"rec"`: random effects for recruitment only, survival/transitions for older ages are deterministic.
+ * `"rec+1"`: random effects for recruitment and survival/transitions for older ages
 * `sigma_vals`: initial values to use for standard deviations of random effects
 * `sigma_map`: to fix or estimate `sigma_vals` parameters uniquely or commonly
 * `cor`: how to model auto-correlation of random effects
@@ -95,7 +95,7 @@ The `NAA_re` argument to `prepare_wham_input` or `set_NAA` has these elements to
  * `"ar1_a"`: correlated by age, independent by year
  * `"2dar1"`: correlated by year and age
 * `cor_vals`: initial values to use for autocorrelation parameters
-* `decouple_recruitment`: Whether to make recruitment random effects separate from those for survival transitions at older ages.
+* `decouple_recruitment`: Whether to make recruitment random effects independent of those for older ages. Default is TRUE.
 
 ---
 
@@ -140,10 +140,12 @@ fit_3 <- fit_wham(input_3, do.retro=FALSE, do.osa=FALSE)
 ```{r, eval = FALSE}
 N1 <- sapply(0:3, function(x) get(paste0("fit_", x))$rep$NAA[1,1,1,])
 matplot(N1, type = 'l', lwd = 2, lty = 1, ylab = "Initial Abundance", xlab = "Age")
+legend(x = "topright", legend = paste0("fit_", 0:3), col = 1:4, lty = 1, lwd = 2)
 ```
 ```{r, echo = FALSE, out.width="90%", fig.align="center"}
 N1 <- readRDS(file.path("../temp", "vign_4_init_NAA.RDS"))
 matplot(N1, type = 'l', lwd = 2, lty = 1, ylab = "Initial Abundance", xlab = "Age")
+legend(x = "topright", legend = paste0("fit_", 0:3), col = 1:4, lty = 1, lwd = 2)
 ```
 ]
 
@@ -151,10 +153,12 @@ matplot(N1, type = 'l', lwd = 2, lty = 1, ylab = "Initial Abundance", xlab = "Ag
 ```{r, eval = FALSE}
 SSB <- sapply(0:3, function(x) get(paste0("fit_", x))$rep$SSB)
 matplot(SSB, type = 'l', lty = 1, ylab = "SSB", xlab = "Year", lwd = 2)
+legend(x = "topright", legend = paste0("fit_", 0:3), col = 1:4, lty = 1, lwd = 2)
 ```
 ```{r, echo = FALSE, out.width="90%", fig.align="center"}
 SSB <- readRDS(file.path("../temp", "vign_4_init_NAA_SSB.RDS"))
 matplot(SSB, type = 'l', lty = 1, ylab = "SSB", xlab = "Year", lwd = 2)
+legend(x = "topright", legend = paste0("fit_", 0:3), col = 1:4, lty = 1, lwd = 2)
 ```
 ]
 
@@ -350,7 +354,7 @@ The `M` argument to `prepare_wham_input` or `set_M` has these elements to config
 
 # Natural Mortality options
 * `re_model`: configuration options for natural mortality random effects
- * `none`: no age or year varying random effects
+ * `"none"`: no age or year varying random effects
  * `"iid_a"`: uncorrelated by age, constant by year
  * `"iid_y"`: uncorrelated by year, constant by age
  * `"iid_ay"`: uncorrelated by year and age

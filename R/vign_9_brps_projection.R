@@ -68,7 +68,9 @@ saveRDS(mod_2, file.path("temp", "vign_9_mod_2.RDS"))
 mod_2$rep$R_XSPR
 mean(mod_2$rep$NAA[1,1,input_1$data$XSPR_R_avg_yrs+1,1])
 
-cbind(exp(mod_2$rep$log_SSB_FXSPR[,1]), mean(mod_2$rep$NAA[1,1,tail(1:length(temp$years), 10),1])*exp(mod_2$rep$log_SPR_FXSPR[,1]))
+cbind(mod_2$rep$R_XSPR, mod_2$rep$NAA[1,1,,1])
+
+cbind(exp(mod_2$rep$log_SSB_FXSPR[,1]), mean(mod_2$rep$NAA[1,1,tail(1:length(mod_2$years), 10),1])*exp(mod_2$rep$log_SPR_FXSPR[,1]))
 
 input_3 <- input_2
 input_3$data$XSPR_R_opt = 3 # use annual expected R for annual SSB_XSPR

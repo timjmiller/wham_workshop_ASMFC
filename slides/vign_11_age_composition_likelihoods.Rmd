@@ -134,7 +134,7 @@ $$p_{i,y,k}(1-p_{i,y,k})\frac{\phi_i}{1+\phi_i}$$
 $$-p_{i,y,k}p_{i,y,k'}\frac{\phi_i}{1+\phi_i}$$ for $k\neq k'$
 * Requires observations to be in (0,1) so 0s (and 1s) are excluded
 * "miss-0" specifies to ignore predicted age composition where 0s occur
-* "pool-0" specified to pool predicted age composition with those for adjacent non-0 observations
+* "pool-0" specifies to pool predicted age composition with those for adjacent non-0 observations
 
 ---
 # Proportion observations <br>
@@ -146,7 +146,7 @@ $$\mathbf{p}_{i,y} \sim Logistic-Normal\left(\widehat{\mathbf{p}}_{i,y}, \boldsy
 * The elements of $\boldsymbol{\Sigma}_{i,y}$ for row $k$ and column $k'$ are $\frac{\rho^{|k-k'|}\sigma_i^2}{(1-\rho^2)N_{i,y}}$
 * Requires observations to be in $(0,1)$ so 0s (and 1s) are excluded
 * "miss-0" specifies to ignore predicted age composition where 0s occur
-* "pool-0" specified to pool predicted age composition with those for adjacent non-0 observations
+* "pool-0" specifies to pool predicted age composition with those for adjacent non-0 observations
 
 ---
 

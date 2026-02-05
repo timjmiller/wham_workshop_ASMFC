@@ -174,7 +174,7 @@ There is an `sdrep` component that is the object returned by `TMB::sdreport()`
 ---
 
 # Calculating standard errors
-`sdrep` give parameter estimates and standar errors.
+`sdrep` gives parameter estimates and standard errors.
 ```{r, eval = TRUE}
 fit_asap$sdrep
 ```
@@ -211,7 +211,7 @@ par_est_list$log_NAA[1,1,1:5,]
 ---
 
 # Calculating standard errors
-The log abundance at ages older than 1 do not have a standard error estimated because they are fixed and unused.
+The log abundance at ages older than 1 do not have a standard error estimated because they are fixed (and unused).
 ```{r}
 par_se_list$log_NAA[1,1,1:5,]
 ```

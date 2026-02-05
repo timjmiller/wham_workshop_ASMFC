@@ -106,7 +106,7 @@ asap3 <- read_asap3_dat(file.path(path_to_examples,"ex2_SNEMAYT.dat"))
 # Using ASAP Input <br>
 
 Third, create a basic WHAM input using the `prepare_wham_input` function. 
-```{r, eval = TRUE}
+```{r, eval = TRUE, collapse = TRUE}
 input <- prepare_wham_input(asap3) 
 ```
 
@@ -131,7 +131,7 @@ With no other arguments specified to the function:
 * It will be specified to match the ASAP3 configuration as closely as possible.
  * Same data, CV, effective sample size assumptions.
  * Typically same assumptions for initial parameter values.
- * BUT any ASAP3 penalties are ignored.
+ * BUT any ASAP3 penalties and phases are ignored.
 
 ---
 
@@ -330,7 +330,7 @@ nofit_seq <- fit_wham(input_seq, do.fit = FALSE)
 nofit_asap <- fit_wham(input_asap, do.fit = FALSE)
 ```
 
-We can see that the negative log likelihood is the same whether we build the input all at once or sequentially. 
+We can see that the negative log likelihood is the same whether we build the input all at once or sequentially, but not directly from the asap dat file.
 ```{r, eval = TRUE}
 nofit_all$fn() - nofit_seq$fn() #equal
 nofit_all$fn() - nofit_asap$fn() #different
@@ -338,8 +338,6 @@ nofit_all$fn() - nofit_asap$fn() #different
 ---
 
 # Compare unfit models
-
-But building from the asap file provides a different value.
 
 The asap file includes different initial values for initial abuandance at age and catchability:
 ```{r, eval = TRUE}

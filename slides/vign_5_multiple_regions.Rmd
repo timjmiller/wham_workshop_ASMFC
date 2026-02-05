@@ -55,7 +55,7 @@ options(width = 50)
 * Reading in data for two stocks, regions and fitting models without movement
 * Using `set_move`
 * Using different options with example data
- * Configuring a mean movement models
+ * Configuring a mean movement model
  * Configuring age-specific random effects
  * Configuring year-specific random effects
  * Configuring priors
@@ -72,14 +72,14 @@ path_to_examples <- system.file("extdata", package="wham")
 two_stocks_asap <- read_asap3_dat(file.path(path_to_examples,c("ex1_SNEMAYT.dat","ex1_SNEMAYT.dat")))
 ```
 
-The `prepare_wham_input` function will create an input input
+The `prepare_wham_input` function will create an input:
 ```{r, include = FALSE}
 ini_2_stocks <- prepare_wham_input(two_stocks_asap)
 ```
 ```{r, eval = FALSE}
 ini_2_stocks <- prepare_wham_input(two_stocks_asap)
 ```
-The default input 
+The default input:
 * assumes no connectivity of any of the data with a different region for each ASAP
 * a basic statistical catch-at-age model for each stock/region just as the default with one ASAP dat file
 
@@ -307,22 +307,22 @@ fit_asap$opt$obj - fit_all$opt$obj # equal
 
 # Movement options
 
-The `move` argument to `prepare_wham_input` or `set_move` has these elements to configure selectivity.
+The `move` argument to `prepare_wham_input` or `set_move` has these elements to configure seasonal movement.
 
 * `stock_move`: T/F whether each stock can move
-* `separable`: T/F whether movement for each stock should be modeled separably from mortality or both occuring simultaneously
+* `separable`: T/F whether movement for each stock should be modeled separably from mortality or both occurring simultaneously
 * `mean_model`: character matrix (n_regions x n_regions - 1) for fixed effects options (mean and possibly variance) for each movement parameter are
  * `"none"`: (default) no movement between regions
  * `"constant"`: single movement rate to each region shared across all stocks, seasons, ages, years
  * `"season"`: season-specific movement rates to each region shared across all stocks, ages, years
- * `"stock_constant"`: stock-specfic movement rate to each region shared across all seasons, ages, years
- * `"stock_season"`: stock- and season-specfic movement rate to each region shared across all ages, years
+ * `"stock_constant"`: stock-speicfic movement rate to each region shared across all seasons, ages, years
+ * `"stock_season"`: stock- and season-specific movement rate to each region shared across all ages, years
 
 ---
 
 # Movement options
 
-The `move` argument to `prepare_wham_input` or `set_move` has these elements to configure selectivity.
+The `move` argument to `prepare_wham_input` or `set_move` has these elements to configure seasonal movement.
 
 * `age_re`: character matrix (n_regions x (n_regions-1)) for age random effects options (for each mean parameter defined in move$mean_model)
  * `"none"`: (default) no movement rate random effects by age
@@ -337,7 +337,7 @@ The `move` argument to `prepare_wham_input` or `set_move` has these elements to 
 
 # Movement options
 
-The `move` argument to `prepare_wham_input` or `set_move` has these elements to configure selectivity.
+The `move` argument to `prepare_wham_input` or `set_move` has these elements to configure seasonal movement.
 
 * `prior_sigma`: array (n_stocks x n_seasons x n_regions x n_regions - 1) of sd parameters for normal priors on mean movement parameters on transformed scale (-Inf,Inf)
 * `use_prior`: array (n_stocks x n_seasons x n_regions x n_regions - 1) 0/1 indicator whether to include prior for mean movement parameters in joint log-likelihood.
@@ -424,7 +424,12 @@ nofit_move_year <- readRDS(file.path(res_dir,"vign_5_nofit_move_year.RDS"))
 
 # Examine unfit model
 
-Look at movement for northern stock at  age 8 each season
+Because WHAM can treat movement and mortality as sequential or simultaneous, it tracks probability transition matrices that determine proportions at age being alive in different regions or dead in different fleets or due to M. So here there are 2 regions and 2 fleets in each region so there are 7 states to track:
+* alive in each region (first two states)
+* dead from catch in one of 4 fleets (next 4 states)
+* dead due to natural mortality (last state)
+
+Look at movement for northern stock at  age 8 each season (top left of P matrix)
 ```{r, eval = TRUE}
 #first season
 nofit_move$rep$seasonal_Ps_terminal[1,1,8,,]

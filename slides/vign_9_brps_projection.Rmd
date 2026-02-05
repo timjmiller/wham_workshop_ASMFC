@@ -62,8 +62,8 @@ options(width = 50)
 
 Configuring reference point calculations and projections is probably the most complicated and messy part of WHAM
 * WHAM calculates reference points both 
-    * annually (in model and projection years) 
-    * under prevailing conditions (`static` in the names of the reported output)
+    * annually (in model and projection years).
+    * under prevailing conditions (`static` in the names of the reported output).
 * Annual SPR- and MSY-based reference points use annual inputs to SSB and yield per recruit calculations, but there are different options to treat recruitment in different ways for SSB and yield at SPR-based F (e.g., F40).
 * For prevailing reference points, the user can specify which year(s) to average over for inputs to SSB/R and Y/R and how recruitment is treated.
 
@@ -71,12 +71,18 @@ Configuring reference point calculations and projections is probably the most co
 
 # Reference point options
 
-The `basic_info` argument to `prepare_wham_input` has these elements to configure SPR-based reference points.
-* `basic_info$percentSPR`: percentage (0-100) of unfished SSB/R to use for SPR-based reference points (0-100)
-* `basic_info$XSPR_input_average_years`: which years to average inputs to per recruit calculation (selectivity, M, WAA, maturity) for prevailing MSY- and SPR-based reference points. Default is last 5 years.
-* `basic_info$XSPR_R_avg_yrs`: which years to average annual recruitments for SSB and Yield at SPR-based F. Default is all data years.
-* `basic_info$XSPR_R_opt`: whether to use annual estimated or expected recruitments. 
-    * Expected recruitment is constant over years without SR model
+The `basic_info` argument to `prepare_wham_input` is a list with these elements to configure SPR-based reference points.
+* `$percentSPR`: percentage (0-100) of unfished SSB/R to use for SPR-based reference points (0-100).
+* `$XSPR_R_avg_yrs`: which years to average annual recruitments for SSB and Yield at SPR-based F. Default is all data years.
+* `$XSPR_R_opt`: whether to use annual estimated or expected recruitments. 
+    * Expected recruitment is constant over years without SR model or covariates.
+* `$XSPR_input_average_years`: which years to average inputs to per recruit calculation (selectivity, M, WAA, maturity, movement) for prevailing (static) MSY- and SPR-based reference points. Default is last 5 years.
+* `$average_years_M`: which years to average M for static SSB and yield at F RPs. 
+* `$average_years_move`: which years to average movement rates for static SSB and yield at F RPs.
+* `$average_years_mat`: which years to average maturity for static SSB and yield at SPR-based F RPs.
+* `$average_years_waassb`: which years to average WAA for static SSB at SPR-based F RPs.
+* `$average_years_sel`: which years to average fishery selectivity for static SSB and yield at SPR-based F RPs.
+* `$average_years_waacatch`: which years to average WAA for static catch (Yield) at SPR-based F RPs.
 ---
 
 # Reference point examples
@@ -87,7 +93,7 @@ asap3 <- read_asap3_dat(file.path(path_to_examples,"ex2_SNEMAYT.dat"))
 env.dat <- read.csv(file.path(path_to_examples, "CPI.csv"), header=T)
 ```
 
-Here we will set up alternative reference point configurations for an otherise identical model
+Here we will set up alternative reference point configurations for an otherwise identical model.
 
 First, read in the SNEMA yellowtail data and the Cold Pool Index.
 ```{r, eval = FALSE}
@@ -112,9 +118,9 @@ env <- list(
 
 # Reference point example 1
 
-The first reference point configuration assumes
-* Annual recruitment used for annual reference points
-* SPR-based reference points for 50% of unfished SSB/R
+The first reference point configuration assumes:
+* Annual recruitment used for annual reference points.
+* SPR-based reference points for 50% of unfished SSB/R.
 * There is an average over last 10 years for something?
 
 ```{r}
@@ -129,7 +135,7 @@ basic_info <- list(
 
 # Reference point example 1
 
-Create the model input (random effects on R and survival)
+Create the model input (random effects on R and survival):
 ```{r, include = FALSE}
 input_1 <- prepare_wham_input(asap3, recruit_model = 3,
   ecov = env,
@@ -155,14 +161,14 @@ input_1$data$XSPR_R_opt
 
 # Reference point example 1
 
-Fit the model
+Fit the model:
 ```{r, eval = FALSE}
 mod_1 <- fit_wham(input_1, do.sdrep = FALSE, do.osa = FALSE, do.retro = FALSE) 
 ```
 ```{r, include = FALSE}
 mod_1 <- readRDS(file.path("../temp", "vign_9_mod_1.RDS"))
 ```
-The annual recruitments used to fill out `R_XSPR`
+The annual recruitments are used to fill out `R_XSPR`:
 ```{r}
 cbind(mod_1$rep$R_XSPR, mod_1$rep$NAA[1,1,,1])
 ```
@@ -170,7 +176,7 @@ cbind(mod_1$rep$R_XSPR, mod_1$rep$NAA[1,1,,1])
 
 # Reference point example 1
 
-The annual BRPs are indeed the product of the annual recruitments and the annual SSB/R or Y/R
+The annual BRPs are indeed the product of the annual recruitments and the annual SSB/R (or Y/R):
 ```{r}
 cbind(exp(mod_1$rep$log_SSB_FXSPR[,1]), mod_1$rep$NAA[1,1,,1]*exp(mod_1$rep$log_SPR_FXSPR[,1]))
 ```
@@ -180,8 +186,8 @@ cbind(exp(mod_1$rep$log_SSB_FXSPR[,1]), mod_1$rep$NAA[1,1,,1]*exp(mod_1$rep$log_
 
 What about prevailing BRPs?
 
-* SSB/R and Y/R uses weight-at-age, maturity, M, selectivity is averaged over last 10 years for the prevailing conditions BRPs
-* supposed to use mean recruitment for the last 10 years
+* SSB/R and Y/R uses weight-at-age, maturity, M, selectivity is averaged over last 10 years for the prevailing conditions BRPs.
+* Supposed to use mean recruitment for the last 10 years.
 
 Recall:
 ```{r}
@@ -205,11 +211,11 @@ Uses this for recruitment: SSB / (SSB/R) = R
 ```{r}
 exp(mod_1$rep$log_SSB_FXSPR_static[1])/exp(mod_1$rep$log_SPR_FXSPR_static[1])
 ```
-But the average recruitment is this
+But the average recruitment is this:
 ```{r}
 mean(mod_1$rep$R_XSPR[tail(1:input_1$data$n_years_model,10),1])
 ```
-Turns out, the prevailing BRP currrently just uses the last value from `R_XSPR`
+Turns out, the prevailing BRP currently just uses the last value from `R_XSPR`:
 ```{r}
 mod_1$rep$R_XSPR[input_1$data$n_years_model,1]
 ```
@@ -217,9 +223,9 @@ mod_1$rep$R_XSPR[input_1$data$n_years_model,1]
 
 # Reference point example 2
 
-The second reference point configuration assumes just changes `XSPR_R_opt=2`
-* mean annual recruitment for last 10 years is supposed to be used for annual BRPs
-* mean annual recruitment for the last 10 years is supposed to be used for prevailing BRPs 
+The second reference point configuration uses `XSPR_R_opt=2`:
+* Mean annual recruitment for the last 10 years is supposed to be used for annual BRPs.
+* Mean annual recruitment for the last 10 years is supposed to be used for prevailing BRPs.
 
 We don't need to fit the model, just use the parameters already estimated.
 ```{r, eval = FALSE}
@@ -241,7 +247,7 @@ The annual recruitments in `R_XSPR` are are all the same:
 ```{r}
 cbind(mod_2$rep$R_XSPR, mod_2$rep$NAA[1,1,,1])
 ```
-And equal to the mean of the last 10 years
+And equal to the mean of the last 10 years:
 ```{r}
 mean(mod_2$rep$NAA[1,1,tail(1:input_2$data$n_years_model,10),1])
 ```
@@ -250,12 +256,12 @@ mean(mod_2$rep$NAA[1,1,tail(1:input_2$data$n_years_model,10),1])
 
 # Reference point example 2
 
-So, the annual BRPs are the product of the mean recruitment estimates and the annual SSB/R or Y/R as expected
+So, the annual BRPs are the product of the mean recruitment estimates and the annual SSB/R or Y/R as expected.
 ```{r}
 cbind(exp(mod_2$rep$log_SSB_FXSPR[,1]), mod_2$rep$R_XSPR[,1]*exp(mod_2$rep$log_SPR_FXSPR[,1]))
 ```
 
-The prevailing conditions use the value in the last year for `$R_XSPR` which is the mean recruitment for the last 10 years
+The prevailing conditions use the value in the last year for `$R_XSPR` which is the mean recruitment for the last 10 years.
 ```{r}
 exp(mod_2$rep$log_SSB_FXSPR_static[1])
 exp(mod_2$rep$log_SSB_FXSPR_static[1])/exp(mod_2$rep$log_SPR_FXSPR_static[1])
@@ -266,9 +272,9 @@ mod_2$rep$R_XSPR[input_2$data$n_years_model,1]
 
 # Reference point example 3
 
-The third reference point configuration assumes just changes `XSPR_R_opt=3`
-* Annual expected recruitment rather than estimated recruitment is used for annual BRPs
-* Annual extected recruitment rather than estimatd recruitment is used for the average
+The third reference point configuration uses `XSPR_R_opt=3`:
+* Annual expected recruitment rather than estimated recruitment is used for annual BRPs.
+* Annual expected recruitment rather than estimated recruitment is used for the average.
 
 Again, we don't need to fit the model, just use the parameters already estimated.
 ```{r, eval = FALSE}
@@ -292,7 +298,7 @@ cbind(mod_3$rep$R_XSPR, mod_3$rep$pred_NAA[1,1,,1])
 ```
 ]
 .pull-right[
-And the annual BRPs are indeed the product of the annual expected recruitment and the annual SSB/R or Y/R
+And the annual BRPs are indeed the product of the annual expected recruitment and the annual SSB/R or Y/R.
 ```{r}
 cbind(exp(mod_3$rep$log_SSB_FXSPR[,1]), mod_3$rep$R_XSPR[,1]*exp(mod_3$rep$log_SPR_FXSPR[,1]))
 ```
@@ -301,7 +307,7 @@ cbind(exp(mod_3$rep$log_SSB_FXSPR[,1]), mod_3$rep$R_XSPR[,1]*exp(mod_3$rep$log_S
 
 # Reference point example 3
 
-Like `XSPR_R_opt=1`, since the prevailing conditions use the value in the last year for `$R_XSPR` it is not based on the average recruitments
+Like `XSPR_R_opt=1`, since the prevailing conditions use the value in the last year for `$R_XSPR`, it is not based on the average recruitment.
 ```{r}
 exp(mod_3$rep$log_SSB_FXSPR_static[1])
 exp(mod_3$rep$log_SSB_FXSPR_static[1])/exp(mod_3$rep$log_SPR_FXSPR_static[1])
@@ -312,9 +318,9 @@ mod_3$rep$R_XSPR[input_3$data$n_years_model,1]
 
 # Reference point example 4
 
-The fourth reference point configuration assumes just changes `XSPR_R_opt=4`
-* mean annual expected recruitment for last 10 years is supposed to be used for annual BRPs
-* mean annual expected recruitment for the last 10 years is supposed to be used for prevailing BRPs 
+The fourth reference point configuration uses `XSPR_R_opt=4`:
+* Mean annual expected recruitment for the last 10 years is supposed to be used for annual BRPs.
+* Mean annual expected recruitment for the last 10 years is supposed to be used for prevailing BRPs.
 
 Again, we don't need to fit the model, just use the parameters already estimated.
 ```{r, eval = FALSE}
@@ -335,7 +341,7 @@ The annual recruitments in `R_XSPR` are are all the same:
 ```{r}
 cbind(mod_4$rep$R_XSPR, mod_4$rep$pred_NAA[1,1,,1])
 ```
-And equal to the mean of the last 10 years expected recruitment
+And equal to the mean of the last 10 years expected recruitment:
 ```{r}
 mean(mod_4$rep$pred_NAA[1,1,tail(1:input_4$data$n_years_model,10),1])
 ```
@@ -344,13 +350,12 @@ mean(mod_4$rep$pred_NAA[1,1,tail(1:input_4$data$n_years_model,10),1])
 
 # Reference point example 4
 
-So, the annual BRPs are the product of the mean expected recruitment and the annual SSB/R or Y/R as expected
+So, the annual BRPs are the product of the mean expected recruitment and the annual SSB/R or Y/R as expected.
 ```{r}
 cbind(exp(mod_4$rep$log_SSB_FXSPR[,1]), mod_4$rep$R_XSPR[,1]*exp(mod_4$rep$log_SPR_FXSPR[,1]))
 ```
 
-And the prevailing conditions use the value in the last year for `$R_XSPR` which is also the mean expected recruitment for the last 10 years
-
+And the prevailing conditions use the value in the last year for `$R_XSPR` which is also the mean expected recruitment for the last 10 years.
 ```{r}
 exp(mod_4$rep$log_SSB_FXSPR_static[1])
 exp(mod_4$rep$log_SSB_FXSPR_static[1])/exp(mod_4$rep$log_SPR_FXSPR_static[1])
@@ -361,18 +366,18 @@ mod_4$rep$R_XSPR[input_4$data$n_years_model,1]
 
 # Projection options
 
-Relevant arguments to `basic_info`
-* `basic_info$XSPR_input_average_years`: is used for both prevailing FXSPR and FMSY and that which is used in projections.
-
-`proj.opts` argument to `project_wham` and `prepare_projection`
+`proj.opts` argument to `project_wham` and `prepare_projection` for population attributes
 * `$n.yrs`: number of projection years
-* `$use.FXSPR`: whether to use prevailing SPR-based F
-* `$use.FMSY`: whether to use prevailing FMSY (when possible)
-* `$percentFXSPR`: same as `basic_info` and redefines it.
-* `$percentFMSY`: same as `basic_info` and redefines it.
-* `$use.last.F`: whether to use terminal F estimate (and uncertainty)
-* `$use.avg.F`: whether to use average of annual F estimates (years defined by `avg.yrs`)
-* `$avg.yrs` (vector) specify which years to average over for calculating reference points or average F. Default = last 5 model years.
+* `$proj_R_opt`: (integer)
+    * 1: continue any RE processes for recruitment, 
+    * 2: make projected recruitment consistent with average recruitment in SPR reference points and cancel any bias correction for NAA in projection years.
+    * 3: average recruitment deviations over `$avg.yrs.R` (if `$sigma = "rec"`) 
+    * 4: no recruitment deviations (if `$sigma = "rec"`)
+* `$proj_NAA_opt`: (integer)
+    * 1: continue any RE processes for NAA, 
+    * 2: average NAA deviations over `$avg.yrs.NAA`. 
+    * 3: no NAA deviations.
+* `$avg.yrs` (vector) specify which years to average over for WAA, selectivity, maturity, M, etc. when calculating reference points or average F in projection years. Default = last 5 model years. Options below for setting these individually.
     * Will redefine anything defined in `prepare_wham_input`
 * `$avg.rec.yrs`: specify which years to calculate the mean and sd for the normal distribution of log-recruitment in projections. Default = all model years. Only used when recruitment is estimated as fixed effects (SCAA).
 
@@ -380,34 +385,68 @@ Relevant arguments to `basic_info`
 
 # Projection options
 
-`proj.opts` argument to `project_wham` and `prepare_projection` (continued)
+`proj.opts` argument to `project_wham` and `prepare_projection` for population attributes (continued)
 
-* `$proj_mature` user-supplied maturity for the projection years. Overrides averaging over years
-* `$proj_waa`} user-supplied weight-at-age for the projection years. Overrides averaging over years
-* `$proj_R_opt`: (integer)
-    * 1: continue any RE processes for recruitment, 
-    * 2: make projected recruitment consistent with average recruitment in SPR reference points and cancel any bias correction for NAA in projection years.
-* `$proj.F` (vector) user-specified annual Fs to use in projections 
-* `$proj.catch` (vector), user-specified annual catches to use in projections (wham determines F internally)
-* `$proj_F_opt`: Overrides any of the above specifications. (vector), integers specifying how to configure each year of the projection: 
+* `$avg.yrs.R`: list (length = n_stocks), years to average recruitment deviations for each stock and region for projection years (if `$proj_R_opt = 3`). Also used for BRPs in projection years. Default = last 5 years.
+* `$avg.yrs.NAA`: list (length = n_stocks, each is a list with length = n_regions), years to average NAA deviations for each stock and region for projection years (if `$proj_NAA_opt = 2`). Also used for BRPs in projection years. Default = last 5 years.
+* `$avg.yrs.waassb`: list (length = n_stocks), years to average weight at age for each stock SSB for projection years (if `$proj_waa` is NULL). Also used for BRPs in projection years. Default = last 5 years.
+* `$avg.yrs.mature`: list (length = n_stocks), years to average maturity at age for each stock for projection years (if `$proj_mature` is NULL). Also used for BRPs in projection years. Default = last 5 years.
+* `$avg.yrs.M`: list (length = n_stocks, each is a list with length = n_regions), years to average natural mortality at age for each stock and region for projection years (if `$cont.M.re = FALSE`). Also used for BRPs in projection years. Default = last 5 years.
+* `$avg.yrs.move`: list (length = n_stocks, each is a list with length = n_regions), years to average movement rates at age and season for each stock and region (at beginning of interval) for projection years (if `$cont.move.re = FALSE`). Also used for BRPs in projection years. Default = last 5 years, tail(model$years, 5).
+
+
+---
+
+# Projection options
+
+`proj.opts` argument to `project_wham` and `prepare_projection` for population attributes (continued)
+
+* `$proj_mature`: user-supplied maturity for the projection years. Overrides averaging over years.
+* `$proj_waa`: user-supplied weight-at-age array (for catch and ssb) for the projection years. Overrides averaging over years.
+* `$cont.M.re`: whether to continue M random effects for projections. Default = FALSE.
+* `$cont.move.re`: whether to continue any movement random effects for projections. Default = FALSE.
+---
+
+# Projection options
+
+`proj.opts` argument to `project_wham` and `prepare_projection` for fishing mortality or catch
+
+* `$use.FXSPR`: whether to use prevailing SPR-based F
+* `$use.FMSY`: whether to use prevailing FMSY (when possible)
+* `$percentFXSPR`: same as `basic_info` and redefines it.
+* `$percentFMSY`: same as `basic_info` and redefines it.
+* `$use.last.F`: whether to use terminal F estimate (and uncertainty)
+* `$use.avg.F`: whether to use average of annual F estimates (years defined by `avg.yrs`)
+* `$proj.F`: (vector) user-specified annual Fs to use in projections 
+* `$proj.catch`: (vector), user-specified annual catches to use in projections (wham determines F internally)
+* `$proj_F_opt`: (vector) integers specifying how to configure each year of the projection (overrides any of the above specifications): 
     * 1: use terminal F
     * 2: use average F
     * 3: use SPR-based F
     * 4: use specified F
     * 5: use specified catch 
     * 6: use Fmsy
-* `$proj_Fcatch`: (vector), catch or F values to use each projection year. Overrides any specifications of `proj.F` or `proj.catch`.
 
 ---
 
 # Projection options
 
-`proj.opts` argument to `project_wham` and `prepare_projection` (continued)
+`proj.opts` argument to `project_wham` and `prepare_projection` for fishing mortality or catch (continued)
 
-* `$cont.ecov` whether to continue environmental covariate process for projections. Default = TRUE.
-* `$use.last.ecov` whether to use terminal year ecov for projections.
-* `$cont.M.re`: whether to continue M random effects for projections. Default = FALSE.
-* `$cont.move.re`: whether to continue any movement random effects for projections. Default = FALSE.
+* `$proj_Fcatch`: (vector or matrix), catch or F values to use each projection year: values are not used for years using Fmsy, FXSPR, terminal F or average F. Overrides any of the above specifications of `$proj.F` or `$proj.catch`. If vector, total catch or F is supplied, else matrix columns should be fleets for fleet-specific F or Catch (n.yrs x 1 or n_fleets).
+* `$avg.yrs.waacatch`: list (length = n_fleets), years to average weight at age for each fleet for projection years (if `$proj_waa` is NULL). Any BRPs calculated in projection years will also use this. Default = last 5 years, tail(model$years, 5).
+* `$avg.yrs.sel`: list (length = n_fleets), years to average selectivity or FAA for each fleet for projection years. Any BRPs calculated in projection years will also use this. Default = last 5 years, tail(model$years, 5).
+
+---
+
+# Projection options
+
+`proj.opts` argument to `project_wham` and `prepare_projection` for covariates:
+
+* `$cont.ecov`: whether to continue environmental covariate process for projections. Default = TRUE.
+* `$use.last.ecov`: whether to use terminal year ecov for projections.
+* `$avg.ecov.yrs`: (vector)  specify which years to average the environmental covariate(s) over for projections.
+* `$proj.ecov`: (matrix), user-specified environmental covariate(s) for projections. n.yrs x n.ecov.
 
 ---
 
@@ -608,7 +647,7 @@ knitr::include_graphics("figs/vign_9_proj_10_SSB_F.png")
 # Projection examples:
 
 .pull-left[
-5 years, catch, the F40
+5 years, catch, F40
 ```{r, echo = FALSE, out.width="100%", fig.align="center"}
 knitr::include_graphics("figs/vign_9_proj_9_SSB_F.png")
 ```

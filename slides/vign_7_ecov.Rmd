@@ -77,7 +77,7 @@ The `ecov` argument to `prepare_wham_input` or `set_ecov` has these elements to 
 * `year`: years corresponding to the rows of `mean`
 * `use_obs`: T/F (matrix) on whether to use the observations for each covariate.
 * `process_model`: `"rw"` (random walk), `"ar1"`, or `NA` (do not fit)
-* `process_mean_vals`,`process_sig_vals`,`process_cor_vals`: intial values for process distribution parameters
+* `process_mean_vals`,`process_sig_vals`,`process_cor_vals`: initial values for process distribution parameters
 
 ---
 
@@ -88,7 +88,7 @@ The `ecov` argument to `prepare_wham_input` or `set_ecov` has these elements to 
  * type: `"controlling"`,`"limiting"`,`"lethal"`,`"masking"`,`"directive"` different effects on S-R function
  * lag: `"lag-0"`, `"lag-1"`,...
  * order: `"linear"` = `"poly-1"`, `"poly-2"`,... 
- * e.g.: `"limiting-lag-1-poly-2"` would model the covariate would have a limiting affecting recruitment the next year (lag = 1) as a second order orthogonal polynomial: $b_0 + b_1  ecov +  b_2  ecov^2$
+ * e.g.: `"limiting-lag-1-poly-2"` would model the covariate to have a limiting affecting recruitment the next year (lag = 1) as a second order orthogonal polynomial: $b_0 + b_1  ecov +  b_2  ecov^2$
 * `M_how`: character strings ("lag-order") for effect on natural mortality
 * `M_effect_map`: integer array indicating which estimated effects are common by age,stock,region
 * `q_how`: character strings ("lag-order") for effect on catchability
@@ -98,7 +98,7 @@ The `ecov` argument to `prepare_wham_input` or `set_ecov` has these elements to 
 
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
 First, load up some data, including the Gulf Stream Index time series provided with WHAM.
 ```{r, include = FALSE}
@@ -150,9 +150,9 @@ plot_wham_output(fit_0, dir.main = tmp.dir)
 ```
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
-Diagnostics of the GSI index
+Diagnostics of the GSI index without effects
 .pull-left[
 ```{r, echo = FALSE, out.width="95%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_0_GSI_diagnostic.png")
@@ -167,10 +167,10 @@ knitr::include_graphics("figs/vign_7_fit_0_GSI_osa.png")
 
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
 .pull-left[
-With effect of GSI on rectruitment check: 
+Check parameter estimates without GSI effects on recruitment: 
 * sd of recruitment random effects
 * observation sd for GSI
 
@@ -187,9 +187,9 @@ knitr::include_graphics("figs/vign_7_fit_0_par_table.png")
 
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
-Now chage the model to include a limiting effect (affects maximum recruitment) of the GSI
+Now change the model to include a limiting effect (affects maximum recruitment) of the GSI
 ```{r, eval = FALSE}
 
 ecov_1 <- ecov
@@ -204,9 +204,9 @@ plot_wham_output(fit_1, dir.main = tmp.dir)
 ```
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
-Diagnostics of the GSI index
+Diagnostics of the GSI index with effect on recruitment
 .pull-left[
 ```{r, echo = FALSE, out.width="95%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_1_GSI_diagnostic.png")
@@ -221,11 +221,11 @@ knitr::include_graphics("figs/vign_7_fit_1_GSI_osa.png")
 
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
 .pull-left[
-With effect of GSI on rectruitment check: 
-*  effect size
+Check parameter estimates with GSI effects on recruitment: 
+* effect size
 * sd of recruitment random effects compared to null
 * observation sd for GSI compared to null
 ]
@@ -238,7 +238,7 @@ knitr::include_graphics("figs/vign_7_fit_1_par_table.png")
 
 ---
 
-# Fitting efects on recruitment
+# Fitting effects on recruitment
 
 ```{r, echo = FALSE, out.width="50%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_1_SR.png")
@@ -246,7 +246,7 @@ knitr::include_graphics("figs/vign_7_fit_1_SR.png")
 
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
 Set up input and fit model with:
 * no recruitment or natural mortality effects
@@ -278,7 +278,7 @@ plot_wham_output(fit_2, dir.main = tmp.dir)
 ```
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
 Check diagnostics of the GSI index again without effects
 .pull-left[
@@ -295,10 +295,10 @@ knitr::include_graphics("figs/vign_7_fit_2_GSI_osa.png")
 
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
 .pull-left[
-Without effect of GSI on M check: 
+Check parameter estimates without GSI effects on M: 
 * sd of M Random effects
 * observation sd for GSI
 ]
@@ -311,7 +311,7 @@ knitr::include_graphics("figs/vign_7_fit_2_par_table.png")
 
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
 Change input to include effect of GSI on M at all ages
 
@@ -328,9 +328,9 @@ plot_wham_output(fit_3, dir.main = tmp.dir)
 ```
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
-Check diagnostics of the GSI index again with effects
+Check diagnostics of the GSI index again with effects on M
 .pull-left[
 ```{r, echo = FALSE, out.width="95%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_3_GSI_diagnostic.png")
@@ -345,10 +345,10 @@ knitr::include_graphics("figs/vign_7_fit_3_GSI_osa.png")
 
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
 .pull-left[
-With effect of GSI on M check: 
+Check parameter estimates with GSI effects on M: 
 *  effect size
 * sd of M Random effects compared to null
 * observation sd for GSI compared to null
@@ -362,7 +362,7 @@ knitr::include_graphics("figs/vign_7_fit_3_par_table.png")
 
 ---
 
-# Fitting efects on M
+# Fitting effects on M
 
 ```{r, echo = FALSE, out.width="50%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_3_M.png")
@@ -370,7 +370,7 @@ knitr::include_graphics("figs/vign_7_fit_3_M.png")
 
 ---
 
-# Fitting efects on recruitment and M
+# Fitting effects on recruitment and M
 
 Change input to include effect of GSI on recruitment as well
 
@@ -391,7 +391,7 @@ max(abs(fit_4$final_gradient))
 
 ---
 
-# Fitting efects on recruitment and M
+# Fitting effects on recruitment and M
 
 But if we start out model at MLEs from `fit_3`, converges fine:
 ```{r, eval = FALSE}
@@ -411,10 +411,10 @@ max(abs(fit_4$final_gradient))
 
 ---
 
-# Fitting efects on recruitment and M
+# Fitting effects on recruitment and M
 
 .pull-left[
-With effect of GSI on rectruitment and M check: 
+Check parameter estimates with GSI effects on M: 
 *  effect size for R and M
 * sd of recruitment random effects compared to null
 * sd of M random effects compared to null
@@ -428,7 +428,7 @@ knitr::include_graphics("figs/vign_7_fit_4_par_table.png")
 
 ---
 
-# Fitting efects on recruitment and M
+# Fitting effects on recruitment and M
 
 .pull-left[
 ```{r, echo = FALSE, out.width="100%", fig.align="center"}
@@ -444,7 +444,7 @@ knitr::include_graphics("figs/vign_7_fit_4_M.png")
 
 ---
 
-# Fitting efects on recruitment and M
+# Fitting effects on recruitment and M
 
 .pull-left[
 ```{r, eval = FALSE}
@@ -461,9 +461,9 @@ knitr::include_graphics("figs/vign_7_compare_SSB_F_R.png")
 ]
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
-Change input to exclue any GSI effects, but include random effects on catchability for the first index.
+Change input to exclude any GSI effects, but include random effects on catchability for the first index.
 ```{r, eval = FALSE}
 catchability <- list(
   re = c("iid", "none")
@@ -478,9 +478,9 @@ plot_wham_output(fit_5, dir.main = tmp.dir)
 
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
-Check diagnostics of the GSI index again with effects
+Check diagnostics of the GSI index again without effects
 .pull-left[
 ```{r, echo = FALSE, out.width="95%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_5_GSI_diagnostic.png")
@@ -495,10 +495,11 @@ knitr::include_graphics("figs/vign_7_fit_5_GSI_osa.png")
 
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
 .pull-left[
-With effect of GSI on M check: 
+Check parameter estimates without GSI effects on catchability: 
+With effect of GSI on catchability check: 
 * sd of q Random effects
 * observation sd for GSI
 ]
@@ -511,7 +512,7 @@ knitr::include_graphics("figs/vign_7_fit_5_par_table.png")
 
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
 Change input to include effect of GSI on catchability for the first index
 
@@ -528,9 +529,9 @@ plot_wham_output(fit_6, dir.main = tmp.dir)
 ```
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
-Check diagnostics of the GSI index again with effects
+Check diagnostics of the GSI index again with effects on catchability:
 .pull-left[
 ```{r, echo = FALSE, out.width="95%", fig.align="center"}
 knitr::include_graphics("figs/vign_7_fit_6_GSI_diagnostic.png")
@@ -545,10 +546,10 @@ knitr::include_graphics("figs/vign_7_fit_6_GSI_osa.png")
 
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
 .pull-left[
-With effect of GSI on M check: 
+Check parameter estimates with GSI effects on catchability: 
 *  effect size
 * sd of q Random effects compared to null
 * observation sd for GSI compared to null
@@ -562,7 +563,7 @@ knitr::include_graphics("figs/vign_7_fit_6_par_table.png")
 
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
 Compare annual catchability with and without GSI effects
 .pull-left[
@@ -579,7 +580,7 @@ knitr::include_graphics("figs/vign_7_fit_6_q.png")
 
 ---
 
-# Fitting efects on catchability
+# Fitting effects on catchability
 
 .pull-left[
 ```{r, eval = FALSE}

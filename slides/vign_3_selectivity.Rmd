@@ -300,7 +300,7 @@ We can also freely estimate time and age varying $F$.
 Can be of interest to see if there are periods where the age at full selection is different.
 
 * We force the mean of the random effects to be the same for all ages.
-* Fix $F$ at a plausible maximum value ($F=5$), then $F_{y,a} = F * sel_{y,a}$
+* Fix $F$ at a plausible maximum value ($F$=5), then $F_{y,a} = F * sel_{y,a}$
 * mean selectivity should be estimated to scale FAA appropriately.
 
 ```{r, eval = FALSE}

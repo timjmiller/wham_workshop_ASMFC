@@ -57,8 +57,8 @@ options(width = 50)
  * Retros
  * Residuals OSA and otherwise
  * joint likelihood components
-* Using `jitter_wham` (beta)
-* Using `self_test` (beta)
+* Using `jitter_wham`
+* Using `self_test`
 
 ---
 
@@ -68,11 +68,11 @@ This function will take a list of fitted models and generate several comparison 
 The arguments to this function are:
 * `mods`: list of models fitted using WHAM
 * `do.table`: produce table of AIC and Mohn's $\rho$ values (default is TRUE)
-* `do.plot`: produce the comparitive plots (default is TRUE)
+* `do.plot`: produce the comparative plots (default is TRUE)
 * `fdir`: directory where to save comparison plots and tables
 * `compare.opts`: list of options to direct which results to create
  * `stock`: Which stock to make results for (default = 1)
- * `region`: Which retion to make results for (default = 1)
+ * `region`: Which region to make results for (default = 1)
 * `table.opts`: list of options to direct table results (lots of options)
 * `plot.opts`: list of options to direct plot results (lots of options)
 
@@ -222,9 +222,9 @@ knitr::include_graphics(here::here("slides", "figs", "vign_6_fit_4_SSB_retro_rel
 
 ---
 
-# `jitter_wham` (Beta)
+# `jitter_wham`
 
-This function will take a fitted model and refit the model a number of times with alternative starting values
+This function will take a fitted model and refit the model a number of times with alternative starting values.
 The arguments to this function are:
 * `fit_RDS`: The RDS file name for a saved WHAM model
 * `n_jitter`: number of refits of the model to perform (default is 10)
@@ -237,7 +237,7 @@ The arguments to this function are:
 
 ---
 
-# `jitter_wham` (Beta)
+# `jitter_wham`
 
 Here we use the `jitter_wham` function to create the default number of initial parameter vectors and refit the model for each
 
@@ -261,9 +261,9 @@ plot(1:10, sapply(jitter_res[[1]], function(x) x$obj) - fit_6$opt$obj, xlab = "J
 
 ---
 
-# `self_test` (Beta)
+# `self_test`
 
-This function will take a fitted model and simulate a number of new data sets and refit the model to each simulated data set
+This function will take a fitted model and simulate a number of new data sets and refit the model to each simulated data set.
 The arguments to this function are:
 * `fit_RDS`: The RDS file name for a saved WHAM model
 * `n`: number of refits of the model to perform (default is 10)
@@ -275,10 +275,11 @@ The arguments to this function are:
 * `n_cores`: number of cores to use for parallel computation. Default is half the available cores.
 * `res_dir`: directory where the function will save individual files for each simulation/fit.
 * `wham_location`: (optional) location of WHAM package to use.
+* `save_inputs`: T/F whether to save the simulated inputs in res_dir. Default = FALSE.
 
 ---
 
-# `self_test` (Beta)
+# `self_test`
 
 Here we use the `self_test` function to create the default number of initial parameter vectors and refit the model for each
 

@@ -53,7 +53,7 @@ options(width = 50)
 # Outline <br>
 
 * Review what we have covered this week
-* what we did not cover 
+* What we did not cover 
 * How everyone can contribute!
 
 ---
@@ -87,13 +87,13 @@ options(width = 50)
   * by age
   * same annual REs across ages
   * For some ages and not others
-  * On cohorts survival as well
+  * On cohort survival as well
   
 # Configuring catchability
 
 * time-varying catchability might be helpful for
     * indices that cover a small portion of the stock area
-    * species with life styles that are not observed well by the survey
+    * species that are not observed well by the survey
 
 ---
 
@@ -101,6 +101,7 @@ options(width = 50)
 
 * Use nll reporting to deduce where NA issues are.
 * Think hard about input CVs and age comp sample sizes
+    * input samle sizes are particularly important for Dirichlet-Multinomial
 * If optimizer finishes but convergence is lacking probably
     * initial numbers at age 
     * selectivity pars
@@ -119,9 +120,8 @@ options(width = 50)
 
 # Reference points and projections
 
-* Need to be careful of XSPR_R_opt for prevailing static reference points
 * Lots of options for configuring projections for 
-    * F, Catch, M, Covariates, WAA, maturity
+    * F, Catch, M, Covariates, WAA, maturity, ...
 
 # Simulation
 
@@ -143,7 +143,7 @@ options(width = 50)
 * Needs 
     * git installed
     * a github account
-* You can use git and github through Rstudio or many other coding environments
+* You can use git and github through Rstudio, Github Desktop, or many other coding environments
 * You can help without knowing C++ and TMB!
 * Developing on the R side can help with
     * Summarizing input and output from models
@@ -154,7 +154,7 @@ options(width = 50)
 
 # Steps to contributing
 
-* First clone the repo as a `wham` directory. 
+* First clone the repo as a `wham` directory 
     * Using the command line from an appropriate parent directory:
         * `git clone https://github.com/timjmiller/wham.git`
     * Now you have the WHAM repo!
