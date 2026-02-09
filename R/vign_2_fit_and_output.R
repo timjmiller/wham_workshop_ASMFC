@@ -11,7 +11,9 @@ tmp.dir <- tempdir(check=TRUE)
 fit_asap <- fit_wham(input_asap, do.retro = FALSE, do.osa = FALSE, do.sdrep = FALSE, do.brps = FALSE)
 fit_asap <- do_sdreport(fit_asap)
 fit_asap <- do_reference_points(fit_asap, do.sdrep = TRUE)
-fit_asap$peels <- retro(fit_asap)
+fit_asap <- do_retro_peels(fit_asap)
+
+#fit_asap$peels <- retro(fit_asap)
 fit_asap <- make_osa_residuals(fit_asap)
 saveRDS(fit_asap, file.path("temp", "fit_asap_full.RDS"))
 input_asap <- fit_asap$input

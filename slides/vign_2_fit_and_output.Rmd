@@ -148,7 +148,7 @@ names(fit_asap)
 # A basic call to fit_wham
 
 Further elements added by fitting
-* `opt`: the results returned the call to `nlminb`, par, objective, convergence, etc.
+* `opt`: the results returned by the call to `nlminb`, par, objective, convergence, etc.
 * `date`: date/time the fit was completed.
 * `dir`: the directory where the fit was completed.
 * `final_gradient`: the gradient vector at the minimized nll
@@ -201,9 +201,10 @@ par_est_list <- as.list(fit_asap$sdrep, what = "Est")
 # Calculating standard errors
 
 `log_NAA` is an array (n_stocks x n_regions x n_years-1 x n_ages) of parameters for log abundance at age parameters.
- * annual recruitment could be fixed or random effects
- * numbers at older ages can be random effects (or not used)
-For this model, annual recruitments are the only estimated parameters (as fixed effects).
+ * Annual recruitment could be fixed or random effects.
+ * Numbers at older ages can be random effects (or not used). 
+
+ For this model, annual recruitments are the only estimated parameters (as fixed effects).
 ```{r}
 dim(par_est_list$log_NAA)
 par_est_list$log_NAA[1,1,1:5,]
@@ -229,12 +230,12 @@ It is also easy to add reference reporting to a model that has already been fit:
 fit_asap <- do_reference_points(fit_asap, do.sdrep = TRUE)
 ```
 
-and there are also functions for adding retro peels and one-step-ahead residuals
+and there are also functions for adding retro peels and one-step-ahead residuals:
 ```{r, eval = FALSE}
-fit_asap$peels <- retro(fit_asap)
+fit_asap <- do_retro_peels(fit_asap)
 fit_asap <- make_osa_residuals(fit_asap)
 ```
-`make_osa_residuals` runs TMB::one_step_predict for aggregate and composition observations separately and adds those to the list of elements in `fit_asap`
+`make_osa_residuals` runs TMB::one_step_predict for aggregate and composition observations separately and adds those to the list of elements in `fit_asap`.
 ---
 
 # Plotting output
