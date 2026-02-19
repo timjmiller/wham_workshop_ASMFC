@@ -112,7 +112,7 @@ selectivity$initial_pars <- list(
 	rep(0.1,6),
 	c(0.5,0.5,0.5,1,0.5, 0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,1,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,1,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_4 <- set_selectivity(input, selectivity = selectivity)
 input_4 <- set_F(input_4, F_opts)
 temp <- input_4$par$selpars_re
@@ -126,6 +126,21 @@ temp
 fit_4 <- fit_wham(input_4, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 saveRDS(fit_4, file.path("temp", "vign_3_fit_4.RDS"))
 plot_wham_output(fit_4, dir.main = tmp.dir)
+source(file.path(getwd(),"R", "plot.tile.age.year.R"))
+df.plot <- plot.tile.age.year(fit_4)
+plt <- ggplot2::ggplot(df.plot, ggplot2::aes(x=Year, y=Age, fill=Selectivity)) +
+  ggplot2::geom_tile() +
+  ggplot2::scale_x_continuous(expand=c(0,0)) +
+  ggplot2::scale_y_discrete(expand=c(0,0)) +       
+  ggplot2::theme_bw() + 
+  ggplot2::facet_wrap(~Block, dir="v", ncol = 1) +
+  viridis::scale_fill_viridis()
+
+plt
+# png(filename = file.path(getwd(),"slides", "figs", "vign_3_fit_4_selAA.png"), width = 10*144, height = 15*144, res = 144, pointsize = 12, family = "")
+# print(plt)
+# dev.off()
+
 # file.copy(file.path(tmp.dir, "plots_png", "results", "SelAA_tile.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_4_selAA.png"))
 # file.copy(file.path(tmp.dir, "plots_png", "results", "F_byfleet.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_4_full_F.png"))
 # file.copy(file.path(tmp.dir, "plots_png", "results", "CV_SSB_Rec_F.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_4_CV.png"))
@@ -148,7 +163,7 @@ selectivity$initial_pars <- list(
 	c(rep(0.5,4),1,0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_5 <- set_selectivity(input, selectivity = selectivity)
 
 temp <- input_5$par$logit_selpars
@@ -164,6 +179,20 @@ nofit_5$rep$selAA[[1]]
 fit_5 <- fit_wham(input_5, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 saveRDS(fit_5, file.path("temp", "vign_3_fit_5.RDS"))
 plot_wham_output(fit_5, dir.main = tmp.dir)
+df.plot <- plot.tile.age.year(fit_5)
+plt <- ggplot2::ggplot(df.plot, ggplot2::aes(x=Year, y=Age, fill=Selectivity)) +
+  ggplot2::geom_tile() +
+  ggplot2::scale_x_continuous(expand=c(0,0)) +
+  ggplot2::scale_y_discrete(expand=c(0,0)) +       
+  ggplot2::theme_bw() + 
+  ggplot2::facet_wrap(~Block, dir="v", ncol = 1) +
+  viridis::scale_fill_viridis()
+
+plt
+# png(filename = file.path(getwd(),"slides", "figs", "vign_3_fit_5_selAA.png"), width = 10*144, height = 15*144, res = 144, pointsize = 12, family = "")
+# print(plt)
+# dev.off()
+
 # file.copy(file.path(tmp.dir, "plots_png", "results", "SelAA_tile.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_5_selAA.png"))
 # file.copy(file.path(tmp.dir, "plots_png", "results", "F_byfleet.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_5_full_F.png"))
 # file.copy(file.path(tmp.dir, "plots_png", "results", "CV_SSB_Rec_F.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_5_CV.png"))
@@ -177,7 +206,7 @@ selectivity$initial_pars <- list(
 	c(rep(0.5,4),1,0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1:4,NA,5),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1:4,NA,5),c(6:8,NA,9:10), c(11:13,NA,14:15))
 input_6 <- set_selectivity(input, selectivity = selectivity)
 # nofit_6 <- fit_wham(input_6, do.fit = FALSE)
 
@@ -188,6 +217,22 @@ temp[1,,]
 fit_6 <- fit_wham(input_6, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 saveRDS(fit_6, file.path("temp", "vign_3_fit_6.RDS"))
 plot_wham_output(fit_6, dir.main = tmp.dir)
+
+df.plot <- plot.tile.age.year(fit_6)
+plt <- ggplot2::ggplot(df.plot, ggplot2::aes(x=Year, y=Age, fill=Selectivity)) +
+  ggplot2::geom_tile() +
+  ggplot2::scale_x_continuous(expand=c(0,0)) +
+  ggplot2::scale_y_discrete(expand=c(0,0)) +       
+  ggplot2::theme_bw() + 
+  ggplot2::facet_wrap(~Block, dir="v", ncol = 1) +
+  viridis::scale_fill_viridis()
+
+plt
+# png(filename = file.path(getwd(),"slides", "figs", "vign_3_fit_6_selAA.png"), width = 10*144, height = 15*144, res = 144, pointsize = 12, family = "")
+# print(plt)
+# dev.off()
+
+
 # file.copy(file.path(tmp.dir, "plots_png", "results", "SelAA_tile.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_6_selAA.png"))
 
 #ar1(age) RE
@@ -197,12 +242,29 @@ selectivity$initial_pars <- list(
 	c(rep(0.5,4),1,0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_7 <- set_selectivity(input, selectivity = selectivity)
 fit_7 <- fit_wham(input_7, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 saveRDS(fit_7, file.path("temp", "vign_3_fit_7.RDS"))
 plot_wham_output(fit_7, dir.main = tmp.dir)
+
+df.plot <- plot.tile.age.year(fit_7)
+plt <- ggplot2::ggplot(df.plot, ggplot2::aes(x=Year, y=Age, fill=Selectivity)) +
+  ggplot2::geom_tile() +
+  ggplot2::scale_x_continuous(expand=c(0,0)) +
+  ggplot2::scale_y_discrete(expand=c(0,0)) +       
+  ggplot2::theme_bw() + 
+  ggplot2::facet_wrap(~Block, dir="v", ncol = 1) +
+  viridis::scale_fill_viridis()
+
+plt
+# png(filename = file.path(getwd(),"slides", "figs", "vign_3_fit_7_selAA.png"), width = 10*144, height = 15*144, res = 144, pointsize = 12, family = "")
+# print(plt)
+# dev.off()
+
+
 # file.copy(file.path(tmp.dir, "plots_png", "results", "SelAA_tile.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_7_selAA.png"))
+
 
 # 2dAR1 RE
 selectivity$re <- c("2dar1", "none", "none")
@@ -211,11 +273,26 @@ selectivity$initial_pars <- list(
 	c(rep(0.5,4),1,0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5),
 	c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_8 <- set_selectivity(input, selectivity = selectivity)
-fit_8 <- fit_wham(input_8, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
+fit_8 <- fit_wham(input_8, do.sdrep = FALSE, do.osa = FALSE, do.retro = FALSE)
 saveRDS(fit_8, file.path("temp", "vign_3_fit_8.RDS"))
 plot_wham_output(fit_8, dir.main = tmp.dir)
+
+df.plot <- plot.tile.age.year(fit_8)
+plt <- ggplot2::ggplot(df.plot, ggplot2::aes(x=Year, y=Age, fill=Selectivity)) +
+  ggplot2::geom_tile() +
+  ggplot2::scale_x_continuous(expand=c(0,0)) +
+  ggplot2::scale_y_discrete(expand=c(0,0)) +       
+  ggplot2::theme_bw() + 
+  ggplot2::facet_wrap(~Block, dir="v", ncol = 1) +
+  viridis::scale_fill_viridis()
+
+plt
+# png(filename = file.path(getwd(),"slides", "figs", "vign_3_fit_8_selAA.png"), width = 10*144, height = 15*144, res = 144, pointsize = 12, family = "")
+# print(plt)
+# dev.off()
+
 # file.copy(file.path(tmp.dir, "plots_png", "results", "SelAA_tile.png"), file.path(getwd(),"slides", "figs", "vign_3_fit_8_selAA.png"))
 
 

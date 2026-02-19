@@ -311,7 +311,7 @@ F_opts <- list(
 selectivity$re <- c("iid", "none", "none")
 selectivity$fix_pars <- NULL
 selectivity$initial_pars[[1]] <- rep(0.1,6)
-selectivity$map_pars <- list(c(1,1,1,1,1,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,1,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 
 input_4 <- set_selectivity(input, selectivity = selectivity)
 input_4 <- set_F(input_4, F_opts)
@@ -328,7 +328,7 @@ plot_wham_output(fit_4, dir.main = tmp.dir)
 * Highly variable and often large uncertainty in fully-selected $F$
 
 .three-column[
-```{r, echo = FALSE, out.width="100%", fig.align="center"}
+```{r, echo = FALSE, out.width="80%", fig.align="center"}
 knitr::include_graphics(here::here("slides", "figs","vign_3_fit_4_selAA.png"))
 ```
 ]
@@ -358,7 +358,7 @@ selectivity$initial_pars <- list(
   c(rep(0.5,4),1,0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_5 <- set_selectivity(input, selectivity = selectivity)
 fit_5 <- fit_wham(input_5, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 plot_wham_output(fit_5, dir.main = tmp.dir)
@@ -372,7 +372,7 @@ plot_wham_output(fit_5, dir.main = tmp.dir)
 * Highly variable and often large uncertainty in fully-selected $F$
 
 .three-column[
-```{r, echo = FALSE, out.width="100%", fig.align="center"}
+```{r, echo = FALSE, out.width="80%", fig.align="center"}
 knitr::include_graphics(here::here("slides", "figs","vign_3_fit_5_selAA.png"))
 ```
 ]
@@ -402,14 +402,14 @@ selectivity$initial_pars <- list(
   c(rep(0.5,4),1,0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1:4,NA,5),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1:4,NA,5),c(6:8,NA,9:10), c(11:13,NA,14:15))
 input_6 <- set_selectivity(input, selectivity = selectivity)
 fit_6 <- fit_wham(input_6, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 plot_wham_output(fit_6, dir.main = tmp.dir)
 ```
 ]
 .pull-right[
-```{r, echo = FALSE, out.width="100%", fig.align="center"}
+```{r, echo = FALSE, out.width="60%", fig.align="center"}
 knitr::include_graphics(here::here("slides", "figs","vign_3_fit_6_selAA.png"))
 ```
 ]
@@ -428,17 +428,19 @@ selectivity$initial_pars <- list(
   c(rep(0.5,4),1,0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_7 <- set_selectivity(input, selectivity = selectivity)
 fit_7 <- fit_wham(input_7, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
 plot_wham_output(fit_7, dir.main = tmp.dir)
 ```
 ]
 .pull-right[
-```{r, echo = FALSE, out.width="100%", fig.align="center"}
+```{r, echo = FALSE, out.width="60%", fig.align="center"}
 knitr::include_graphics(here::here("slides", "figs","vign_3_fit_7_selAA.png"))
 ```
 ]
+
+---
 
 # 2DAR1 age and time-varying selectivity
 
@@ -452,14 +454,15 @@ selectivity$initial_pars <- list(
   c(rep(0.5,4),1,0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5),
   c(0.5,0.5,0.5,1,0.5, 0.5))
-selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(1:3,NA,4:5), c(1:3,NA,4:5))
+selectivity$map_pars <- list(c(1,1,1,1,NA,1),c(2:4,NA,5:6), c(7:9,NA,10:11))
 input_8 <- set_selectivity(input, selectivity = selectivity)
-fit_8 <- fit_wham(input_8, do.sdrep = TRUE, do.osa = FALSE, do.retro = FALSE)
+fit_8 <- fit_wham(input_8, do.sdrep = FALSE, do.osa = FALSE, do.retro = FALSE)
+#Does not converge...
 plot_wham_output(fit_8, dir.main = tmp.dir)
 ```
 ]
 .pull-right[
-```{r, echo = FALSE, out.width="100%", fig.align="center"}
+```{r, echo = FALSE, out.width="60%", fig.align="center"}
 knitr::include_graphics(here::here("slides", "figs","vign_3_fit_8_selAA.png"))
 ```
 ]
